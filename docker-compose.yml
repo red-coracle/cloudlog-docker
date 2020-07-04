@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  php:
+    build: .
+    volumes:
+      - ./cloudlog:/var/www/html/cloudlog
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./cloudlog:/var/www/html/cloudlog
+      - ./cloudlog.conf:/etc/nginx/conf.d/cloudlog.conf:ro
+    ports:
+      - 9001:80
+
+  db:
+    image: mariadb
+    restart: always
+    volumes:
+     - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: cloudlog
+      MYSQL_USER: cloudlog
+      MYSQL_PASSWORD: cloudlog
